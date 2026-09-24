@@ -1,30 +1,29 @@
-import { useState } from 'react';
+import { router } from "expo-router";
+import { useState } from "react";
 import {
   Alert,
   FlatList,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  StyleSheet,
   Text,
   View,
-} from 'react-native';
-import { router } from 'expo-router';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { styles } from "./styles";
 
-import { Background } from '@/components/Background';
-import { Button } from '@/components/Button';
-import { CategorySelect } from '@/components/CategorySelect';
-import { Guild } from '@/components/Guild';
-import { GuildSelect } from '@/components/GuildSelect';
-import { Header } from '@/components/Header';
-import { ListDivider } from '@/components/ListDivider';
-import { ModalView } from '@/components/ModalView';
-import { SmallInput } from '@/components/SmallInput';
-import { TextArea } from '@/components/TextArea';
-import { guilds } from '@/mocks/guilds';
-import { colors, fonts, metrics } from '@/theme';
-import type { CategoryId, Guild as GuildType } from '@/types';
+import { Background } from "@/components/Background";
+import { Button } from "@/components/Button";
+import { CategorySelect } from "@/components/CategorySelect";
+import { Guild } from "@/components/Guild";
+import { GuildSelect } from "@/components/GuildSelect";
+import { Header } from "@/components/Header";
+import { ListDivider } from "@/components/ListDivider";
+import { ModalView } from "@/components/ModalView";
+import { SmallInput } from "@/components/SmallInput";
+import { TextArea } from "@/components/TextArea";
+import { guilds } from "@/mocks/guilds";
+import type { CategoryId, Guild as GuildType } from "@/types";
 
 const MAX_DESCRIPTION = 100;
 
@@ -36,11 +35,11 @@ export function AppointmentCreate() {
   const [guild, setGuild] = useState<GuildType | null>(null);
   const [guildsVisible, setGuildsVisible] = useState(false);
 
-  const [day, setDay] = useState('');
-  const [month, setMonth] = useState('');
-  const [hour, setHour] = useState('');
-  const [minute, setMinute] = useState('');
-  const [description, setDescription] = useState('');
+  const [day, setDay] = useState("");
+  const [month, setMonth] = useState("");
+  const [hour, setHour] = useState("");
+  const [minute, setMinute] = useState("");
+  const [description, setDescription] = useState("");
 
   const handleGuildSelect = (selected: GuildType) => {
     setGuild(selected);
@@ -49,7 +48,10 @@ export function AppointmentCreate() {
 
   const handleSave = () => {
     if (!category || !guild || !day || !month || !hour || !minute) {
-      Alert.alert('Agendar partida', 'Preencha categoria, servidor, data e horário.');
+      Alert.alert(
+        "Agendar partida",
+        "Preencha categoria, servidor, data e horário.",
+      );
       return;
     }
 
@@ -58,24 +60,24 @@ export function AppointmentCreate() {
       id: String(Date.now()),
       guild,
       category,
-      date: `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${hour.padStart(
+      date: `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}T${hour.padStart(
         2,
-        '0',
-      )}:${minute.padStart(2, '0')}:00`,
+        "0",
+      )}:${minute.padStart(2, "0")}:00`,
       description,
       hosted: true,
       members: [],
     };
 
     // TODO: persistir (API / AsyncStorage). Por ora, apenas volta para a Home.
-    console.log('Nova partida', appointment);
+    console.log("Nova partida", appointment);
     router.back();
   };
 
   return (
     <KeyboardAvoidingView
       style={styles.flex}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       <Background>
         <Header title="Agendar partida" />
@@ -88,7 +90,11 @@ export function AppointmentCreate() {
           <Text style={[styles.label, styles.categoryLabel]}>Categoria</Text>
 
           <View style={styles.categories}>
-            <CategorySelect hasCheckBox selected={category} onSelect={setCategory} />
+            <CategorySelect
+              hasCheckBox
+              selected={category}
+              onSelect={setCategory}
+            />
           </View>
 
           <View style={styles.form}>
@@ -116,7 +122,9 @@ export function AppointmentCreate() {
 
             <View style={[styles.fieldHeader, styles.description]}>
               <Text style={styles.label}>Descrição</Text>
-              <Text style={styles.caption}>Max {MAX_DESCRIPTION} caracteres</Text>
+              <Text style={styles.caption}>
+                Max {MAX_DESCRIPTION} caracteres
+              </Text>
             </View>
 
             <View style={styles.textArea}>
@@ -127,51 +135,33 @@ export function AppointmentCreate() {
               />
             </View>
 
-            <Button title="Agendar" style={styles.submit} onPress={handleSave} />
+            <Button
+              title="Agendar"
+              style={styles.submit}
+              onPress={handleSave}
+            />
           </View>
         </ScrollView>
       </Background>
 
-      <ModalView visible={guildsVisible} onClose={() => setGuildsVisible(false)}>
+      <ModalView
+        visible={guildsVisible}
+        onClose={() => setGuildsVisible(false)}
+      >
         <FlatList
           data={guilds}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <Guild guild={item} onPress={() => handleGuildSelect(item)} />}
+          renderItem={({ item }) => (
+            <Guild guild={item} onPress={() => handleGuildSelect(item)} />
+          )}
           ItemSeparatorComponent={() => <ListDivider inset={84} spacing={12} />}
-          contentContainerStyle={[styles.guildList, { paddingBottom: bottom + 24 }]}
+          contentContainerStyle={[
+            styles.guildList,
+            { paddingBottom: bottom + 24 },
+          ]}
           showsVerticalScrollIndicator={false}
         />
       </ModalView>
     </KeyboardAvoidingView>
   );
 }
-
-const styles = StyleSheet.create({
-  flex: { flex: 1 },
-  label: { fontFamily: fonts.title700, fontSize: 18, color: colors.heading },
-  categoryLabel: { marginTop: 32, marginLeft: metrics.screenPadding },
-  categories: { marginTop: 12 },
-  form: { paddingHorizontal: metrics.screenPadding, marginTop: 32 },
-  dateRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 28,
-  },
-  inputs: { flexDirection: 'row', alignItems: 'center', marginTop: 12 },
-  divider: {
-    marginHorizontal: 4,
-    fontFamily: fonts.text500,
-    fontSize: 15,
-    color: colors.body,
-  },
-  fieldHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  description: { marginTop: 28 },
-  caption: { fontFamily: fonts.text400, fontSize: 13, lineHeight: 17, color: colors.body },
-  textArea: { marginTop: 12 },
-  submit: { marginTop: 56 },
-  guildList: { paddingHorizontal: metrics.screenPadding, paddingTop: 24 },
-});

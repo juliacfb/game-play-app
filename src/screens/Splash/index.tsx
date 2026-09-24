@@ -1,15 +1,16 @@
-import { useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { router } from 'expo-router';
+import { router } from "expo-router";
+import { useEffect } from "react";
+import { View } from "react-native";
+import { styles } from "./styles";
 
-import Logo from '@/assets/svg/logo.svg';
-import { Background } from '@/components/Background';
+import Logo from "@/assets/svg/logo.svg";
+import { Background } from "@/components/Background";
 
 const SPLASH_DURATION = 1800;
 
 export function Splash() {
   useEffect(() => {
-    const timer = setTimeout(() => router.replace('/sign-in'), SPLASH_DURATION);
+    const timer = setTimeout(() => router.replace("/sign-in"), SPLASH_DURATION);
     return () => clearTimeout(timer);
   }, []);
 
@@ -21,7 +22,3 @@ export function Splash() {
     </Background>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-});

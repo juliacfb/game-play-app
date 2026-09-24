@@ -1,35 +1,35 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
-import { colors, fonts } from '@/theme';
+import { colors, fonts } from "@/theme";
 
 export const styles = StyleSheet.create({
   stripes: {
-    position: 'absolute',
+    position: "absolute",
     top: 100,
     left: -6,
   },
   illustration: {
-    position: 'absolute',
+    position: "absolute",
     top: 114,
-    left: '50%',
-    marginLeft: -115.5, // x=72 no Figma, levemente deslocada à direita
+    left: "50%",
+    marginLeft: -115.5,
     width: 250,
     height: 297,
-    transform: [{ scaleX: -1 }], // o Figma espelha a imagem original
+    transform: [{ scaleX: -1 }],
   },
   fade: {
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     right: 0,
     height: 127,
   },
   content: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
     paddingTop: 394,
   },
   title: {
-    textAlign: 'center',
+    textAlign: "center",
     fontFamily: fonts.title700,
     fontSize: 40,
     lineHeight: 40,
@@ -37,7 +37,7 @@ export const styles = StyleSheet.create({
   },
   subtitle: {
     marginTop: 16,
-    textAlign: 'center',
+    textAlign: "center",
     fontFamily: fonts.text400,
     fontSize: 15,
     lineHeight: 25,

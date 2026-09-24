@@ -1,20 +1,20 @@
-import { useMemo, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
-import { router } from 'expo-router';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { router } from "expo-router";
+import { useMemo, useState } from "react";
+import { FlatList, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { styles } from "./styles";
 
-import { Appointment } from '@/components/Appointment';
-import { Background } from '@/components/Background';
-import { ButtonAdd } from '@/components/ButtonAdd';
-import { CategorySelect } from '@/components/CategorySelect';
-import { ListDivider } from '@/components/ListDivider';
-import { ListHeader } from '@/components/ListHeader';
-import { LogoutModal } from '@/components/LogoutModal';
-import { Profile } from '@/components/Profile';
-import { appointments } from '@/mocks/appointments';
-import { currentUser } from '@/mocks/user';
-import { metrics } from '@/theme';
-import type { CategoryId } from '@/types';
+import { Appointment } from "@/components/Appointment";
+import { Background } from "@/components/Background";
+import { ButtonAdd } from "@/components/ButtonAdd";
+import { CategorySelect } from "@/components/CategorySelect";
+import { ListDivider } from "@/components/ListDivider";
+import { ListHeader } from "@/components/ListHeader";
+import { LogoutModal } from "@/components/LogoutModal";
+import { Profile } from "@/components/Profile";
+import { appointments } from "@/mocks/appointments";
+import { currentUser } from "@/mocks/user";
+import type { CategoryId } from "@/types";
 
 export function Home() {
   const { top, bottom } = useSafeAreaInsets();
@@ -22,7 +22,10 @@ export function Home() {
   const [logoutVisible, setLogoutVisible] = useState(false);
 
   const filtered = useMemo(
-    () => (category ? appointments.filter((item) => item.category === category) : appointments),
+    () =>
+      category
+        ? appointments.filter((item) => item.category === category)
+        : appointments,
     [category],
   );
 
@@ -31,14 +34,17 @@ export function Home() {
 
   const handleLogout = () => {
     setLogoutVisible(false);
-    router.replace('/sign-in');
+    router.replace("/sign-in");
   };
 
   return (
     <Background>
       <View style={[styles.header, { marginTop: top + 12 }]}>
-        <Profile user={currentUser} onPressAvatar={() => setLogoutVisible(true)} />
-        <ButtonAdd onPress={() => router.push('/appointment/create')} />
+        <Profile
+          user={currentUser}
+          onPressAvatar={() => setLogoutVisible(true)}
+        />
+        <ButtonAdd onPress={() => router.push("/appointment/create")} />
       </View>
 
       <View style={styles.categories}>
@@ -46,18 +52,27 @@ export function Home() {
       </View>
 
       <View style={styles.listHeader}>
-        <ListHeader title="Partidas agendadas" subtitle={`Total ${filtered.length}`} />
+        <ListHeader
+          title="Partidas agendadas"
+          subtitle={`Total ${filtered.length}`}
+        />
       </View>
 
       <FlatList
         data={filtered}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <Appointment data={item} onPress={() => router.push(`/appointment/${item.id}`)} />
+          <Appointment
+            data={item}
+            onPress={() => router.push(`/appointment/${item.id}`)}
+          />
         )}
         ItemSeparatorComponent={() => <ListDivider inset={84} spacing={16} />}
         style={styles.list}
-        contentContainerStyle={[styles.listContent, { paddingBottom: bottom + 24 }]}
+        contentContainerStyle={[
+          styles.listContent,
+          { paddingBottom: bottom + 24 },
+        ]}
         showsVerticalScrollIndicator={false}
       />
 
@@ -69,16 +84,3 @@ export function Home() {
     </Background>
   );
 }
-
-const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: metrics.screenPadding,
-  },
-  categories: { marginTop: 40 },
-  listHeader: { marginTop: 40 },
-  list: { marginTop: 24 },
-  listContent: { paddingHorizontal: metrics.screenPadding },
-});

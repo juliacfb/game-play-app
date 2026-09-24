@@ -1,8 +1,8 @@
-import { ReactNode } from 'react';
-import { Modal, Pressable, StyleSheet, View } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
+import { ReactNode } from "react";
+import { Modal, Pressable, StyleSheet, View } from "react-native";
 
-import { colors, gradients } from '@/theme';
+import { colors, gradients } from "@/theme";
 
 type Props = {
   visible: boolean;
@@ -33,7 +33,10 @@ export function ModalView({ visible, onClose, children }: Props) {
 }
 
 const styles = StyleSheet.create({
-  overlay: { flex: 1, backgroundColor: colors.overlay },
+  overlay: {
+    flex: 1,
+    backgroundColor: colors.overlay,
+  },
   backdrop: { height: 72 },
   sheet: { flex: 1 },
   bar: {
@@ -41,7 +44,7 @@ const styles = StyleSheet.create({
     height: 2,
     borderRadius: 2,
     backgroundColor: colors.secondary,
-    alignSelf: 'center',
+    alignSelf: "center",
     marginTop: 13,
   },
 });
